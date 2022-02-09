@@ -24,12 +24,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  int _selectedIndex = 0;
+  String message = "Stay here and get rewards";
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter++;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -68,44 +69,70 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     super.didChangeAppLifecycleState(state);
     switch (state) {
       case AppLifecycleState.inactive:
-        print('appLifeCycleState inactive');
-        break;
+        {
+          print('appLifeCycleState inactive');
+          message = "Your time will now restart";
+          setState(() {});
+          break;
+        }
+
       case AppLifecycleState.resumed:
-        print('appLifeCycleState resumed');
-        break;
+        {
+          print('appLifeCycleState inactive');
+          message = "Your time will now restart";
+          setState(() {});
+          break;
+        }
       case AppLifecycleState.paused:
-        print('appLifeCycleState paused');
-        break;
+        {
+          print('appLifeCycleState inactive');
+          message = "Your time will now restart";
+          setState(() {});
+          break;
+        }
       case AppLifecycleState.detached:
-        print('appLifeCycleState detached');
-        break;
+        {
+          print('appLifeCycleState inactive');
+          message = "Your time will now restart";
+          setState(() {});
+          break;
+        }
     }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Do Good'),
+        title: Center(child: Text('Do Good')),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              '$message',
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              '${DateTime.now()}',
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      bottomNavigationBar: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.local_offer), label: 'Offers')
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
